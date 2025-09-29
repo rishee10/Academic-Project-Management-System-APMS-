@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block title %}Teacher Dashboard - Student-Teacher Portal{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h2>Teacher Dashboard</h2>
+        
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5>Filter Students</h5>
+            </div>
+            <div class="card-body">
+                <form method="get" action="{% url 'download_student_data' %}" class="row g-3">
+                    <div class="col-md-4">
+                        <label for="section" class="form-label">Section</label>
+                        <select name="section" id="section" class="form-select">
+                            <option value="">All Sections</option>
+                            {% for section in sections %}
+                                <option value="{{ section }}">{{ section }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="branch" class="form-label">Branch</label>
+                        <select name="branch" id="branch" class="form-select">
+                            <option value="">All Branches</option>
+                            {% for branch in branches %}
+                                <option value="{{ branch }}">{{ branch }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-4 d-flex align-items-end">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-download me-1"></i> Download Report
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h5>My Groups</h5>
+            </div>
+            <div class="card-body">
+                {% if groups %}
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Group Name</th>
+                                    <th>Project Title</th>
+                                    <th>Section</th>
+                                    <th>Members</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for group in groups %}
+                                    <tr>
+                                        <td>{{ group.name }}</td>
+                                        <td>{{ group.project_title }}</td>
+                                        <td>{{ group.section }}</td>
+                                        <td>{{ group.members.count }}</td>
+                                        <td>
+                                            {% if group.is_approved %}
+                                                <span class="badge bg-success">Approved</span>
+                                            {% else %}
+                                                <span class="badge bg-warning">Pending</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <a href="{% url 'group_detail' group.id %}" class="btn btn-sm btn-info">
+                                                <i class="fas fa-eye"></i> View
+                                            </a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <p class="text-muted">No groups assigned to you yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

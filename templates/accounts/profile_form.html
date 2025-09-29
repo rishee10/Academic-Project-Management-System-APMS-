@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+
+{% block title %}Complete Profile - Student-Teacher Portal{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title mb-0">Complete Your {{ user_type|title }} Profile</h4>
+            </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    {% if user_type == 'student' %}
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="id_full_name" class="form-label required-field">Full Name</label>
+                                <input type="text" name="full_name" class="form-control" id="id_full_name" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="id_section" class="form-label required-field">Section</label>
+                                <input type="text" name="section" class="form-control" id="id_section" required>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="id_passing_year" class="form-label required-field">Passing Year</label>
+                                <input type="number" name="passing_year" class="form-control" id="id_passing_year" min="2000" max="2100" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="id_branch" class="form-label required-field">Branch</label>
+                                <input type="text" name="branch" class="form-control" id="id_branch" required>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="id_degree" class="form-label required-field">Degree</label>
+                                <input type="text" name="degree" class="form-control" id="id_degree" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="id_mobile_no" class="form-label required-field">Mobile No</label>
+                                <input type="text" name="mobile_no" class="form-control" id="id_mobile_no" required>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="id_email_id" class="form-label required-field">Email ID</label>
+                                <input type="email" name="email_id" class="form-control" id="id_email_id" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="id_abc_id" class="form-label required-field">ABC ID</label>
+                                <input type="text" name="abc_id" class="form-control" id="id_abc_id" required>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="id_id_card_photo" class="form-label required-field">ID Card Photo</label>
+                        <input type="file" name="id_card_photo" class="form-control" id="id_id_card_photo" accept="image/*" required>
+                    </div>
+                    
+                    {% else %}
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="id_full_name" class="form-label required-field">Full Name</label>
+                                <input type="text" name="full_name" class="form-control" id="id_full_name" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="id_mobile_no" class="form-label required-field">Mobile No</label>
+                                <input type="text" name="mobile_no" class="form-control" id="id_mobile_no" required>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="id_email_id" class="form-label required-field">Email ID</label>
+                                <input type="email" name="email_id" class="form-control" id="id_email_id" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="id_department" class="form-label required-field">Department</label>
+                                <input type="text" name="department" class="form-control" id="id_department" required>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    {% endif %}
+                    
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">Save Profile</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

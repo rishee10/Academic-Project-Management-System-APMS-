@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - Student-Teacher Portal{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h2>Welcome, {{ user.get_full_name|default:user.username }}!</h2>
+        <p class="lead">
+            {% if user.is_student %}
+                Student Dashboard
+            {% elif user.is_teacher %}
+                Teacher Dashboard
+            {% elif user.is_admin %}
+                Admin Dashboard
+            {% endif %}
+        </p>
+    </div>
+</div>
+
+{% if user.is_student %}
+<div class="row mt-4">
+    <div class="col-md-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <i class="fas fa-users fa-3x text-primary mb-3"></i>
+                <h5 class="card-title">My Groups</h5>
+                <p class="card-text">View and manage your project groups</p>
+                <a href="{% url 'my_groups' %}" class="btn btn-primary">View Groups</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <i class="fas fa-plus-circle fa-3x text-success mb-3"></i>
+                <h5 class="card-title">Create Group</h5>
+                <p class="card-text">Create a new project group</p>
+                <a href="{% url 'create_group' %}" class="btn btn-success">Create Group</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <i class="fas fa-user fa-3x text-info mb-3"></i>
+                <h5 class="card-title">My Profile</h5>
+                <p class="card-text">View and edit your profile</p>
+                <a href="{% url 'profile' %}" class="btn btn-info">View Profile</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% elif user.is_teacher %}
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card text-center">
+            <div class="card-body">
+                <i class="fas fa-users fa-3x text-primary mb-3"></i>
+                <h5 class="card-title">My Groups</h5>
+                <p class="card-text">View groups assigned to you as mentor</p>
+                <a href="{% url 'teacher_dashboard' %}" class="btn btn-primary">View Groups</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card text-center">
+            <div class="card-body">
+                <i class="fas fa-download fa-3x text-success mb-3"></i>
+                <h5 class="card-title">Student Reports</h5>
+                <p class="card-text">Download student data and reports</p>
+                <a href="{% url 'teacher_dashboard' %}" class="btn btn-success">Download Reports</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% elif user.is_admin %}
+<div class="row mt-4">
+    <div class="col-md-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <i class="fas fa-cog fa-3x text-primary mb-3"></i>
+                <h5 class="card-title">Admin Panel</h5>
+                <p class="card-text">Access the administration interface</p>
+                <a href="{% url 'admin:index' %}" class="btn btn-primary">Admin Site</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <i class="fas fa-users fa-3x text-success mb-3"></i>
+                <h5 class="card-title">Manage Groups</h5>
+                <p class="card-text">View and manage all project groups</p>
+                <a href="{% url 'admin:projects_projectgroup_changelist' %}" class="btn btn-success">Manage Groups</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <i class="fas fa-user-graduate fa-3x text-info mb-3"></i>
+                <h5 class="card-title">Manage Users</h5>
+                <p class="card-text">Manage students, teachers, and admins</p>
+                <a href="{% url 'admin:accounts_user_changelist' %}" class="btn btn-info">Manage Users</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% if user.is_student and not has_profile %}
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="alert alert-warning">
+            <h5>Complete Your Profile</h5>
+            <p>You need to complete your profile before you can create or join groups.</p>
+            <a href="{% url 'complete_student_profile' %}" class="btn btn-warning">Complete Profile</a>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

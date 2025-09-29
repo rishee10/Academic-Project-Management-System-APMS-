@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block title %}Submit Project - Student-Teacher Portal{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title mb-0">Project Submission for {{ group.name }}</h4>
+            </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="id_ppt_file" class="form-label">Presentation File (PPT)</label>
+                                <input type="file" name="ppt_file" class="form-control" id="id_ppt_file" accept=".ppt,.pptx,.pdf">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="id_synopsis_report" class="form-label">Synopsis Report</label>
+                                <input type="file" name="synopsis_report" class="form-control" id="id_synopsis_report" accept=".doc,.docx,.pdf">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="id_github_link" class="form-label">GitHub Repository Link</label>
+                                <input type="url" name="github_link" class="form-control" id="id_github_link" placeholder="https://github.com/username/repository">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="id_srs_report" class="form-label">SRS Report</label>
+                                <input type="file" name="srs_report" class="form-control" id="id_srs_report" accept=".doc,.docx,.pdf">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">Submit Project</button>
+                    </div>
+                </form>
+                
+                {% if submission %}
+                <hr>
+                <h5 class="mt-4">Current Submission</h5>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <tr>
+                            <th>PPT File</th>
+                            <td>
+                                {% if submission.ppt_file %}
+                                <a href="{{ submission.ppt_file.url }}" target="_blank">Download</a>
+                                {% else %}Not submitted{% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Synopsis Report</th>
+                            <td>
+                                {% if submission.synopsis_report %}
+                                <a href="{{ submission.synopsis_report.url }}" target="_blank">Download</a>
+                                {% else %}Not submitted{% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>GitHub Link</th>
+                            <td>
+                                {% if submission.github_link %}
+                                <a href="{{ submission.github_link }}" target="_blank">{{ submission.github_link }}</a>
+                                {% else %}Not submitted{% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>SRS Report</th>
+                            <td>
+                                {% if submission.srs_report %}
+                                <a href="{{ submission.srs_report.url }}" target="_blank">Download</a>
+                                {% else %}Not submitted{% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Last Updated</th>
+                            <td>{{ submission.updated_at }}</td>
+                        </tr>
+                    </table>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+
+{% block title %}Add Members - Student-Teacher Portal{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title mb-0">Add Members to {{ group.name }}</h4>
+            </div>
+            <div class="card-body">
+                <!-- Debug Information -->
+                <div class="alert alert-info">
+                    <h6>Debug Information:</h6>
+                    <p>Group Section: <strong>{{ group.section }}</strong></p>
+                    <p>Available Students: <strong>{{ available_students.count }}</strong></p>
+                    {% if available_students %}
+                    <p>Available Students List:</p>
+                    <ul>
+                        {% for student in available_students %}
+                        <li>{{ student.full_name }} ({{ student.abc_id }}) - Section: {{ student.section }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </div>
+                
+                <div class="alert alert-warning">
+                    <i class="fas fa-info-circle me-2"></i>
+                    You can add up to {{ max_members }} more members to your group. 
+                    <strong>All members must be from the same section ({{ group.section }}).</strong>
+                </div>
+                
+                <!-- Rest of the template remains the same -->
+                <h5 class="mt-4">Current Members</h5>
+                {% if current_members %}
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Role</th>
+                                <th>ABC ID</th>
+                                <th>Section</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for member in current_members %}
+                            <tr>
+                                <td>{{ member.student.full_name }}</td>
+                                <td>{{ member.get_role_display }}</td>
+                                <td>{{ member.student.abc_id }}</td>
+                                <td>{{ member.student.section }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="text-muted">No members added yet.</p>
+                {% endif %}
+                
+                {% if max_members > 0 %}
+                <hr>
+                
+                <h5 class="mt-4">Add New Member</h5>
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="id_student" class="form-label required-field">Student</label>
+                                <select name="student" class="form-select" id="id_student" required>
+                                    <option value="">Select a student from section {{ group.section }}</option>
+                                    {% for student in form.fields.student.queryset %}
+                                    <option value="{{ student.user_id }}">{{ student.full_name }} ({{ student.abc_id }}) - Section: {{ student.section }}</option>
+                                    {% empty %}
+                                    <option value="">No students available in section {{ group.section }}</option>
+                                    {% endfor %}
+                                </select>
+                                {% if form.student.errors %}
+                                <div class="text-danger">
+                                    {% for error in form.student.errors %}
+                                    <small>{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="id_role" class="form-label required-field">Role</label>
+                                <select name="role" class="form-select" id="id_role" required>
+                                    <option value="">Select a role</option>
+                                    <option value="member1">Team Member 1</option>
+                                    <option value="member2">Team Member 2</option>
+                                    <option value="member3">Team Member 3</option>
+                                </select>
+                                {% if form.role.errors %}
+                                <div class="text-danger">
+                                    {% for error in form.role.errors %}
+                                    <small>{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">Add Member</button>
+                    </div>
+                </form>
+                {% else %}
+                <div class="alert alert-warning mt-4">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    Your group already has the maximum number of members (4 including the team lead).
+                </div>
+                {% endif %}
+                
+                <div class="mt-4">
+                    <a href="{% url 'group_detail' group.id %}" class="btn btn-success">
+                        <i class="fas fa-check me-1"></i> Finish Group Creation
+                    </a>
+                    <a href="{% url 'my_groups' %}" class="btn btn-secondary ms-2">
+                        <i class="fas fa-arrow-left me-1"></i> Back to My Groups
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
